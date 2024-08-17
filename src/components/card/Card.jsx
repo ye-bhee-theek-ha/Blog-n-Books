@@ -20,7 +20,7 @@ const Card = (props) => {
     const like = async () => {
         SetLoading(true);
         try {  
-          const response = await axios.post(`https://blog-and-books-backend-56eu.vercel.app/api/blogs/like/${props.id}`, {}, {
+          const response = await axios.post(process.env.REACT_APP_BASE_URL + `/api/blogs/like/${props.id}`, {}, {
             headers: { Authorization: `Bearer ${token}` },
           });
           console.log(response)

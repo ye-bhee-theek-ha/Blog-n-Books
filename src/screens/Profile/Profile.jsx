@@ -18,7 +18,7 @@ const Profile = () => {
   const fetchProfileData = async () => {
     const token = getToken();
     try {
-      const response = await axios.get("https://blog-and-books-backend-56eu.vercel.app/api/users/getInfo", {
+      const response = await axios.get(process.env.REACT_APP_BASE_URL + "/api/users/getInfo", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setProfileData(response.data);
@@ -43,7 +43,7 @@ const Profile = () => {
     setChangingRole(true);
     console.log("role changed")
     try {
-        const response = await axios.post("https://blog-and-books-backend-56eu.vercel.app/api/users/toggleRole", {}, {
+        const response = await axios.post(process.env.REACT_APP_BASE_URL + "/api/users/toggleRole", {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       var NewProfileData = profileData;

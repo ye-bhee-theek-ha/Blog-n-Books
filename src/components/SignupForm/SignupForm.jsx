@@ -37,7 +37,7 @@ const SignupForm = (props) => {
 
     try {
       const response = await axios.post(
-      "https://blog-and-books-backend-56eu.vercel.app/api/users/register",
+      process.env.REACT_APP_BASE_URL + "/api/users/register",
       {
         name: formData.username,
         email: formData.email,

@@ -34,7 +34,7 @@ const UploadBook = () => {
 
   const fetchTags = async () => {
     try {
-      const response = await axios.get("https://blog-and-books-backend-56eu.vercel.app/api/tags");
+      const response = await axios.get(process.env.REACT_APP_BASE_URL + "/api/tags");
       setTags(response.data.map(tag => ({ name: tag.name, id: tag._id })));
     } catch (error) {
       console.error("Error fetching tags:", error);
@@ -59,7 +59,7 @@ const UploadBook = () => {
               try {
                 const token = getToken();
                 const response = await axios.post(
-                  "https://blog-and-books-backend-56eu.vercel.app/api/tags",
+                  process.env.REACT_APP_BASE_URL + "/api/tags",
                   { name: tag },
                   { headers: { Authorization: `Bearer ${token}` } }
                 );
@@ -173,7 +173,7 @@ const UploadBook = () => {
     
     try {
       setLoading(true);
-      const response = await axios.post("https://blog-and-books-backend-56eu.vercel.app/api/books", formData, {
+      const response = await axios.post(process.env.REACT_APP_BASE_URL + "/api/books", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           "Authorization": `Bearer ${token}`

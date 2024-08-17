@@ -26,13 +26,13 @@ const ViewBooks = () => {
   useEffect(() => {
     const fetchBookDetails = async () => {
       try {
-        const response = await axios.get(`https://blog-and-books-backend-56eu.vercel.app/api/bookDetails/${id.ID}`);
+        const response = await axios.get(process.env.REACT_APP_BASE_URL + `/api/bookDetails/${id.ID}`);
         const book = response.data;
         setBookTitle(book.title);
         setBookDescription(book.description);
         setAuthorName(book.author);
         setFeaturedImage(book.featuredImage);
-        const pdfResponse = await axios.get(`https://blog-and-books-backend-56eu.vercel.app/api/book/${id.ID}`, {
+        const pdfResponse = await axios.get(process.env.REACT_APP_BASE_URL + `/api/book/${id.ID}`, {
           responseType: 'blob'
         });
         const pdfBlob = new Blob([pdfResponse.data], { type: 'application/pdf' });
