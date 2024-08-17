@@ -1,0 +1,24 @@
+.mask {
+
+    scrollbar-width: thin; 
+    scrollbar-color: transparent transparent; 
+    mask-image: linear-gradient(to right, transparent 0%, white 5%, white 95%, transparent 100%);
+}
+
+/* Customize scrollbar track */
+.mask::-webkit-scrollbar {
+    width: 8px; /* Adjust scrollbar width */
+}
+
+/* Customize scrollbar thumb */
+.mask::-webkit-scrollbar-thumb {
+    background-color: #ccc; /* Adjust thumb color */
+    border-radius: 4px; /* Adjust thumb border radius */
+}
+
+/* Customize scrollbar thumb on hover */
+.mask::-webkit-scrollbar-thumb:hover {
+    background-color: #999; /* Adjust thumb color on hover */
+}
+
+

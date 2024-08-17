@@ -1,0 +1,296 @@
+
+# Begin screens\Blog\Blog.jsx
+import React from "react";
+import PropTypes from "prop-types";
+import { IconSearch, IconBooks } from "@tabler/icons-react";
+import Button from "../../components/button/button";
+import BookCard from "../../components/bookCard/bookCard";
+import Card from "../../components/Card/Card";
+import NotificationCard from "../../components/NotificationCard/NotificationCard";
+import Navbar from "../../components/navbar/navbar";
+
+const Blog = (props) => {
+  return (
+    <div className="bg-lgreen">
+      <Navbar />
+
+    
+    </div>
+  );
+};
+
+Blog.propTypes = {};
+
+Blog.defaultProps = {};
+
+export default Blog;
+
+# End screens\Blog\Blog.jsx
+
+-------------------------------
+
+# Begin screens\Books\Books.jsx
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { IconSearch, IconBooks } from "@tabler/icons-react";
+import Button from "../../components/button/button";
+import BookCard from "../../components/bookCard/bookCard";
+import Card from "../../components/Card/Card";
+import NotificationCard from "../../components/NotificationCard/NotificationCard";
+import Navbar from "../../components/navbar/navbar";
+import {
+    IconLayoutGrid,
+    IconLayoutList
+} from "@tabler/icons-react";
+import CardGrid from "../../components/Card Grid/CardGrid";
+
+
+const Books = (props) => {
+
+    const [Layout, SetLayout] = useState("List")
+
+    const ChangeLayout = () => {
+
+        if (Layout == "List"){
+            SetLayout("Grid")
+        }
+        else if (Layout == "Grid"){
+            SetLayout("List")
+        }
+    }
+
+    const blogs = [
+        "https://picsum.photos/100/180",
+        "https://picsum.photos/120/180",
+        "https://picsum.photos/130/190",
+        "https://picsum.photos/130/150",
+        "https://picsum.photos/170/180",
+        "https://picsum.photos/190/180",
+        "https://picsum.photos/100/180",
+        "https://picsum.photos/120/180",
+        "https://picsum.photos/130/190",
+        "https://picsum.photos/130/150",
+        "https://picsum.photos/170/180",
+        "https://picsum.photos/190/180",
+      ];
+
+
+  return (
+    <div>
+        <div className="bg-lgreen">
+            <Navbar />
+        </div>
+        
+        <div className="flex flex-row justify-between items-center">
+            <div className="text-cardtitle text-mehroon justify-start flex mx-14 my-4">
+            Books by the Author
+            </div>
+            <div className="mx-14 my-4">
+                <button onClick={ChangeLayout}>
+                    {Layout == "List" ? <IconLayoutList className="h-8 w-8 text-mehroon"/> : <IconLayoutGrid className="h-8 w-8 text-mehroon"/>}
+                </button>
+            </div>
+        </div>
+        <div>
+            {Layout === "List" &&
+                blogs.map((blog, index) => (
+                    <Card key={index} src={blog} />
+                ))
+            }
+            <div className={"grid grid-cols-3 md:grid-cols-4 w-full h-full p-10 max-w-7xl mx-auto gap-4 relative "}>
+                {Layout === "Grid" &&
+                    blogs.map((blog, index) => (
+                        <CardGrid key={index} src={blog} />
+                    ))
+                }
+            </div>
+            
+        </div>
+    </div>
+  );
+};
+
+Books.propTypes = {};
+
+Books.defaultProps = {};
+
+export default Books;
+
+# End screens\Books\Books.jsx
+
+-------------------------------
+
+# Begin screens\Home\Home.jsx
+import React from "react";
+import PropTypes from "prop-types";
+import { IconSearch, IconBooks } from "@tabler/icons-react";
+import Button from "../../components/button/button";
+import BookCard from "../../components/bookCard/bookCard";
+import Card from "../../components/Card/Card";
+import NotificationCard from "../../components/NotificationCard/NotificationCard";
+import Navbar from "../../components/navbar/navbar";
+import BookShelf from "../../components/bookshelf/bookshelf";
+import { useNavigate } from "react-router-dom";
+
+
+const Home = (props) => {
+
+  const navigate = useNavigate()
+
+  const blogs = [
+    "https://picsum.photos/100/180",
+    "https://picsum.photos/120/180",
+    "https://picsum.photos/130/190",
+    "https://picsum.photos/130/150",
+    "https://picsum.photos/170/180",
+    "https://picsum.photos/190/180",
+    "https://picsum.photos/100/180",
+    "https://picsum.photos/120/180",
+    "https://picsum.photos/130/190",
+    "https://picsum.photos/130/150",
+    "https://picsum.photos/170/180",
+    "https://picsum.photos/190/180",
+  ];  
+
+  return (
+    <div>
+      <Navbar />
+
+      <div className="h-80 flex flex-row justify-between mx-10 items-center">
+        <h1 className="text-hero text-mehroon w-1/2 md:w-full justify-start flex">
+          heading
+        </h1>
+        <div className="w-1/2 hidden md:flex">
+          <NotificationCard title="Top Today" containerclassName="w-full" />
+        </div>
+      </div>
+
+      <div className="my-8 bg-pink border-y-2 border-mehroon">
+        <BookShelf />
+      </div>
+      <div>
+        <div className="text-cardtitle text-mehroon justify-start flex mx-14 my-4">
+          Blogs by the Author
+        </div>
+        <div>
+          {blogs.map((blog, index) => (
+            <Card key={index} src={blog} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+Home.propTypes = {};
+
+Home.defaultProps = {};
+
+export default Home;
+
+# End screens\Home\Home.jsx
+
+-------------------------------
+
+# Begin screens\Not Found\NotFound.js
+
+function NotFound() {
+    return <div className="NotFound">
+      <h1 className="text-3xl font-bold underline">
+          Page does not exists
+      </h1>
+    </div>;
+  }
+  
+  export default NotFound;
+  
+# End screens\Not Found\NotFound.js
+
+-------------------------------
+
+# Begin screens\Profile\Profile.jsx
+
+# End screens\Profile\Profile.jsx
+
+-------------------------------
+
+# Begin screens\UserAuth\UserAuth.jsx
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { IconSearch, IconBooks } from "@tabler/icons-react";
+import Button from "../../components/button/button";
+import BookCard from "../../components/bookCard/bookCard";
+import Card from "../../components/Card/Card";
+import NotificationCard from "../../components/NotificationCard/NotificationCard";
+import Navbar from "../../components/navbar/navbar";
+import SignupForm from "../../components/SignupForm/SignupForm";
+import LoginForm from "../../components/LoginForm/LoginForm";
+
+const UserAuth = (props) => {
+    const [Form, SetForm] = useState("Login")
+
+    const SetToSignup = () => {
+        SetForm("Signup")
+    }
+
+    const SetToLogin = () => {
+        SetForm("Login")
+    }
+  return (
+    <div className="bg-lgreen">
+        <Navbar />
+        <div className="h-full bg-green flex flex-col justify-center py-4 sm:px-6 lg:px-8">
+            {Form == "Login"?
+                <div >
+                    <div className="sm:mx-auto sm:w-full sm:max-w-md">
+                        <h2 className="mt-2 text-center text-heading font-Display text-mehroon">
+                            Login
+                        </h2>
+                    </div>
+                </div>
+                :
+                <div>
+                    <div className="sm:mx-auto sm:w-full sm:max-w-md">
+                        <h2 className="mt-2 text-center text-heading font-Display text-mehroon">
+                            Signup
+                        </h2>
+                    </div>
+                </div>
+            }
+
+            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+                <div className={`bg-grey bg-opacity-70 border-2 border-orange rounded-lg mx-5 py-8 px-4 shadow-lg sm:rounded-lg sm:px-10 `}>
+                    {Form == "Login"?
+                        <LoginForm move_to_signup={SetToSignup}/> : <SignupForm move_to_login={SetToLogin}/>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+  );
+};
+
+UserAuth.propTypes = {};
+
+UserAuth.defaultProps = {};
+
+export default UserAuth;
+
+# End screens\UserAuth\UserAuth.jsx
+
+-------------------------------
+
+# Directory Structure
+screens/
+    Blog/
+        Blog.jsx
+    Books/
+        Books.jsx
+    Home/
+        Home.jsx
+    Not Found/
+        NotFound.js
+    Profile/
+        Profile.jsx
+    UserAuth/
+        UserAuth.jsx
