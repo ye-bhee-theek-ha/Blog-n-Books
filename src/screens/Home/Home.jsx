@@ -35,7 +35,7 @@ const Home = (props) => {
     try {
       // setLoadingBook(true);
 
-      const response = await axios.get(process.env.REACT_APP_BASE_URL + "/api/booksHomePage", {
+      const response = await axios.get(process.env.REACT_APP_BASE_URL + "/api/booksHomePage/", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBookData(response.data);
@@ -52,7 +52,7 @@ const Home = (props) => {
     try {
       setLoadingBlog(true);
 
-      const response = await axios.get(process.env.REACT_APP_BASE_URL + "/api/blogs", {
+      const response = await axios.get(process.env.REACT_APP_BASE_URL + "/api/blogs/", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBlogData(response.data);
