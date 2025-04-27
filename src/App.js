@@ -1,7 +1,6 @@
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider } from './Auth/Auth';
 import Home from './screens/Home/Home';
 import Blogs from './screens/Blogs/Blogs';
 import NotFound from './screens/Not Found/NotFound';
@@ -13,11 +12,34 @@ import ViewBook from './screens/ViewBook/ViewBook';
 import UploadBlog from './screens/UploadBlog/UploadBlog';
 import ViewBlog from './screens/ViewBlog/ViewBlog';
 
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserProfile } from './store/slices/authSlice';
+import { fetchTags } from './store/slices/tagsSlice';
+import { fetchHomepageBlogs } from './store/slices/blogsSlice';
+import { fetchHomepageBooks } from './store/slices/booksSlice';
+
 function App() {
+
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
+
+  useEffect(() => {
+    // Fetch user profile only if a token exists
+    if (token) {
+      dispatch(fetchUserProfile());
+    }
+    // Fetch data needed globally on app load
+    dispatch(fetchTags());
+    dispatch(fetchHomepageBlogs());
+    dispatch(fetchHomepageBooks());
+
+  }, [dispatch, token]); 
+
+
   return (
     <div className="App bg-green min-h-screen h-full">
       <BrowserRouter>
-        <AuthProvider>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/Blogs" element={<Blogs/>} />
@@ -30,7 +52,6 @@ function App() {
             <Route path="/auth" element={<UserAuth/>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </AuthProvider>
       </BrowserRouter>
     </div>
   );

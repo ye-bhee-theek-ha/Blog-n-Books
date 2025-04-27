@@ -1,12 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { useAuth } from "../../Auth/Auth"
+
 import { IconLoader } from "@tabler/icons-react";
+
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../../store/slices/authSlice";
 
 
 const SignupForm = (props) => {
+
+  const dispatch = useDispatch(); 
+  const { status, error: authError, isLoggedIn } = useSelector((state) => state.auth);
+
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -15,11 +23,16 @@ const SignupForm = (props) => {
   });
 
   const [errMsg, SeterrMsg] = useState("");
-  const [isloading, setIsloading] = useState(false);
-
-  const {storeTokenInLS} = useAuth()
+  const isloading = status === 'loading'; 
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (status === 'succeeded' && localStorage.getItem('token')) {
+      navigate("/");
+    }
+  }, [status, navigate]);
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,37 +40,26 @@ const SignupForm = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    SeterrMsg(""); // Clear previous errors
 
-    if (!(formData.password == formData.Repassword)) {
+    if (!(formData.password === formData.Repassword)) {
       SeterrMsg("Passwords do not Match.");
-      return false;
+      return;
     }
 
-    setIsloading(true)
-
-    try {
-      const response = await axios.post(
-      process.env.REACT_APP_BASE_URL + "/api/users/register",
-      {
-        name: formData.username,
-        email: formData.email,
-        password: formData.password,
+    dispatch(registerUser({ name: formData.username, email: formData.email, password: formData.password }))
+      .unwrap()
+      .catch((err) => {
+        SeterrMsg(err || "Registration failed. Please try again.");
       });
-
-      storeTokenInLS(response.data.token)
-      navigate("/")
-      setIsloading(false)
-      
-    } catch (error) {
-      setIsloading(false)
-
-      if (error.response && error.response.data && error.response.data.message) {
-        SeterrMsg(error.response.data.message);
-      } else {
-        SeterrMsg("An error occurred. Please try again later.");
-      }
-    }
   };
+
+  useEffect(() => {
+    if (status === 'succeeded' && isLoggedIn) {
+      navigate("/");
+    }
+  }, [status, isLoggedIn, navigate]);
+
 
   return (
         <>
@@ -145,7 +147,7 @@ const SignupForm = (props) => {
                 />
               </div>
             </div>
-            {errMsg != "" && (
+            {errMsg && (
               <div className="text-base text-red-600 flex justify-start">
                 {errMsg}
               </div>

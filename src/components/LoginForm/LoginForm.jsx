@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { useAuth } from "../../Auth/Auth"
 import Loader from "../Loader/Loader";
 import { IconLadder, IconLoader } from "@tabler/icons-react";
+
+import {useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../store/slices/authSlice";
+
+
 
 
 const LoginForm = (props) => {
@@ -13,13 +17,19 @@ const LoginForm = (props) => {
     password: "",
   });
 
+  const dispatch = useDispatch()
+  const { status, error: authError, isLoggedIn } = useSelector((state) => state.auth);
+  const isloading = status === 'loading';
+
   const [errMsg, SeterrMsg] = useState("");
 
-  const [isloading, setIsloading] = useState(false);
+  useEffect(() => {
+    if (status === 'succeeded' && localStorage.getItem('token')) {
+      navigate("/");
+    }
+  }, [status, navigate]);
 
   const navigate = useNavigate();
-
-  const {storeTokenInLS} = useAuth()
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,31 +37,19 @@ const LoginForm = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsloading(true)
 
-    try {
-      const response = await axios.post(
-      process.env.REACT_APP_BASE_URL + "/api/users/login",
-      {
-        email: formData.email,
-        password: formData.password
-      }
-    );       
-
-    storeTokenInLS(response.data.token)
-    
-    navigate("/")
-
-    setIsloading(false)
-    } catch (error) {
-      setIsloading(false)
-      if (error.response && error.response.data && error.response.data.message) {
-        SeterrMsg(error.response.data.message);
-      } else {
-        SeterrMsg("An error occurred. Please try again later.");
-      }
-    }
+    dispatch(loginUser({ email: formData.email, password: formData.password }))
+    .unwrap()
+    .catch((err) => {
+      SeterrMsg(err || "Login failed. Please check your credentials."); // Update local error state
+    });
   };
+
+  useEffect(() => {
+    if (status === 'succeeded' && isLoggedIn) {
+      navigate("/");
+    }
+  }, [status, isLoggedIn, navigate]);
 
   return (
         <>
@@ -97,7 +95,7 @@ const LoginForm = (props) => {
                 />
               </div>
             </div>
-            {errMsg != "" && (
+            {errMsg && (
               <div className="text-base text-red-600 flex justify-start">
                 {errMsg}
               </div>

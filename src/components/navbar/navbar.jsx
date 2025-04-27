@@ -8,10 +8,20 @@ import {
 } from "@tabler/icons-react";
 import { useAuth } from '../../Auth/Auth';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../../store/slices/authSlice'; 
+
 const Navbar = (props) => {
+    const dispatch = useDispatch();
+    
+    const { isLoggedIn: isloggedin } = useSelector((state) => state.auth);
 
     const navigate = useNavigate()
-    const {isloggedin, logout} = useAuth()
+
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate('/');
+    };
 
     const onnav = () => {
         isloggedin? navigate("/profile"):navigate("/Auth")
@@ -47,7 +57,7 @@ const Navbar = (props) => {
                 <Button
                     containerclassName = "bg-transparent border text-mehroon hover:text-offwhite hover:bg-mehroon"
                     name= {props.title != "Title"? props.title : isloggedin? "Profile" : "Login"}
-                    onClick = {props.onClick? onclick: onnav}
+                    onClick = {props.title === "Logout" ? handleLogout : (props.onClick ? props.onClick : onnav)}
                 />
             </div>
 

@@ -43,7 +43,7 @@ const ViewBlog = () => {
     setLoading(true)
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get(`https://blog-and-books-backend-56eu.vercel.app/api/blogs/${ID}`);
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/blogs/${ID}`);
         const blog = response.data;
         setTitle(blog.title)
         setAuthor(blog.author)

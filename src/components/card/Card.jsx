@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import Button from '../button/button';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { useAuth } from "../../Auth/Auth";
+
+import { toggleBlogLike, } from "../../store/slices/blogsSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
     IconHeart,
@@ -12,25 +14,17 @@ import {
 
 const Card = (props) => {
     const navigate = useNavigate();
-    const { getToken } = useAuth();
-    const token = getToken();
 
+    const dispatch = useDispatch();
+    
     const [loading, SetLoading] = useState(false)
 
-    const like = async () => {
+    const handleLikeToggle = () => {
         SetLoading(true);
-        try {  
-          const response = await axios.post(process.env.REACT_APP_BASE_URL + `/api/blogs/like/${props.id}`, {}, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          console.log(response)
-        SetLoading(false);         
-        
-        } catch (error) {
-            SetLoading(false);          
-            console.error("Error liking:", error);
-        }
-      }
+        dispatch(toggleBlogLike(props.id));
+        SetLoading(false);
+    };
+
 
     return(
         <div className='flex flex-row mx-10 my-6 rounded-3xl bg-grey border-pink border-2 overflow-hidden text-mehroon col-span-1'>
@@ -55,7 +49,7 @@ const Card = (props) => {
                         </div>
                     </div>
                     <button className='flex h-8 w-8 my-3 rounded-md border-mehroon bg-lorange border justify-center items-center ring-lpink hover:ring-2'
-                        onClick={like}
+                        onClick={handleLikeToggle}
                     >
                         {props.IsLiked ? <IconHeartFilled className={loading && "animate-ping"}/> : <IconHeart className={loading && "animate-ping"}/>}
                         {props.IsLiked ? <IconHeartFilled className = "absolute inline-flex  opacity-75" /> : <IconHeart className="absolute inline-flex opacity-75"/>}
@@ -100,6 +94,7 @@ Card.prototypes = {
     id: PropTypes.string,
     readtime: PropTypes.int,
     likes: PropTypes.int,
+    IsLiked: PropTypes.bool,
     tags: PropTypes.array
 }
 
